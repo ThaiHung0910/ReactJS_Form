@@ -95,6 +95,7 @@ const ManageStudentReducer = createSlice({
       state.searchResults = state.arrStudent.filter((e) =>
         e.name.toLowerCase().includes(action.payload.toLowerCase())
       );
+      state.isSearch = true
     },
   },
 });
