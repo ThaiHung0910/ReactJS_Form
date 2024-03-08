@@ -82,13 +82,12 @@ const ManageStudentReducer = createSlice({
       state.searchTerm = action.payload;
   
 
-      if(state.isSearch) {
-        if(state.searchTerm === "") {
-          console.log(123)
-          state.isSearch = false
-          state.searchResults = []
-        }
-      }
+      // if(state.isSearch) {
+      //   if(state.searchTerm === "") {
+      //     state.isSearch = false
+      //     state.searchResults = []
+      //   }
+      // }
     },
 
     setSearchResults: (state, action) => {

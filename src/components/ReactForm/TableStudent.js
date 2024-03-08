@@ -116,6 +116,7 @@ class TableStudent extends Component {
             onClick={() => {
               const action = setSearchResults(this.props.searchTerm);
               dispatch(action);
+              document.getElementById('searchInput').value = ''
             }}
             style={{ width: "10%" }}
             className="btn btn-primary"
