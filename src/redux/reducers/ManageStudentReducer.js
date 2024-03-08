@@ -1,4 +1,4 @@
-
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   arrStudent: [
@@ -22,91 +22,92 @@ const initialState = {
     email: "",
   },
   isEdit: false,
-  searchTerm: '',
+  searchTerm: "",
   searchResults: [],
-  isSearch: false
+  isSearch: false,
 };
 
+const ManageStudentReducer = createSlice({
+  name: "ManageStudentReducer",
+  initialState,
+  reducers: {
+    addStudent: (state, action) => {
+      state.arrStudent = [...state.arrStudent, action.payload];
+      state.isSearch = false
+    },
 
-export const ManageStudentReducer = (state = initialState, action) => {
-  let cloneArr = [...state.arrStudent]
-  switch (action.type) {
-    case "ADD_STUDENT":
-      console.log(1);
-      return {
-        ...state,
-        arrStudent: [...state.arrStudent, action.payload],
-        isEdit: false,
-        isSearch: false
-      };
-    case "DELETE_STUDENT":
-      console.log(2);
-      let newArr = cloneArr.filter((e) => e.id !== action.payload)
+    deleteStudent: (state, action) => {
+      state.arrStudent = state.arrStudent.filter(
+        (e) => e.id !== action.payload
+      );
+      state.isSearch = false
+    },
 
-      return {
-        ...state,
-        arrStudent: newArr,
-        isEdit: false
-      };
-    case "EDIT_STUDENT":
-      console.log(3);
+    editStudent: (state, action) => {
       document.querySelector('input[name="id"]').readOnly = true;
+      document.getElementById('searchButton').disabled = true
 
-      document.querySelectorAll('.btnDelete').forEach(e => {
-        if(e.classList.contains(action.payload.id)) {
+      document.querySelectorAll(".btnDelete").forEach((e) => {
+        if (e.classList.contains(action.payload.id)) {
           e.disabled = true;
         } else {
-          e.disabled = false
-        }
-      })
-      return {
-        ...state,
-        editStudent: action.payload,
-        isEdit: true,
-      };
-
-    case "UPDATE_STUDENT":
-      document.querySelector('input[name="id"]').readOnly = false
-      
-      document.querySelectorAll('.btnDelete').forEach(e => {
-        if(e.classList.contains(action.payload.id)) {
           e.disabled = false;
         }
-      })
+      });
 
-      console.log(4);
-      let newArr1 = cloneArr.filter((e) => e.id !== action.payload.id)
-      return {
-        ...state,
-        arrStudent: [...newArr1, action.payload],
-        isEdit: false,
-        // isSearch: false,
-      };
+      state.editStudent = action.payload;
+      state.isEdit = true;
+    },
 
-    case "UPDATE_SEARCH_TERM":
-      // let temp = true
+    updateStudent: (state, action) => {
+      document.querySelector('input[name="id"]').readOnly = false;
+      document.getElementById('searchButton').disabled = false
+
+      document.querySelectorAll(".btnDelete").forEach((e) => {
+        if (e.classList.contains(action.payload.id)) {
+          e.disabled = false;
+        }
+      });
+
+      state.arrStudent = [
+        ...state.arrStudent.filter((e) => e.id !== action.payload.id),
+        action.payload,
+      ];
+
+      state.isEdit = false;
+      state.isSearch = false
+    },
+
+    updateSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+  
+
       if(state.isSearch) {
-        if(action.payload === "") {
-          return {
-            ...state,
-            searchTerm: action.payload,
-            isSearch: false
-          };
+        if(state.searchTerm === "") {
+          console.log(123)
+          state.isSearch = false
+          state.searchResults = []
         }
       }
-      return {
-        ...state,
-        searchTerm: action.payload
-      };
-    case "SET_SEARCH_RESULTS":
-      // let resultSearch = state.arrStudent.filter(student => student.name.toLowerCase().includes(action.payload.toLowerCase()))
-      let newArr2 = state.arrStudent.filter(student => student.name.toLowerCase().includes(action.payload.toLowerCase()))
-      return {
-        ...state,
-        searchResults: newArr2,
-        isSearch: true, isEdit: false
-      };
-    default:
-      return { ...state };
-  }
-};
+    },
+
+    setSearchResults: (state, action) => {
+      state.searchResults = state.arrStudent.filter((e) =>
+        e.name.toLowerCase().includes(action.payload.toLowerCase())
+      );
+    },
+  },
+});
+
+export const {
+  addStudent,
+  deleteStudent,
+  editStudent,
+  updateStudent,
+  updateSearchTerm,
+  setSearchResults,
+} = ManageStudentReducer.actions;
+
+export default ManageStudentReducer.reducer;
+
+

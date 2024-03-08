@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { addStudent, updateStudent} from "../../redux/reducers/ManageStudentReducer";
+
+
 
 class FormStudent extends Component {
   state = {
@@ -130,6 +133,7 @@ class FormStudent extends Component {
       }
     }
 
+
     if (isValid) {
       if (!this.props.isEdit) {
         return button;
@@ -142,13 +146,14 @@ class FormStudent extends Component {
   };
 
   renderButtonUpdate = (student) => {
-    let isValid = true;
+    let isValid = true, {dispatch} = this.props
     let currentValue = this.state.value,
       currentErrValue = this.state.errValue,
       button = (
         <button
           onClick={() => {
-            this.props.updateStudent(student);
+            const action = updateStudent(student)
+            dispatch(action)
             this.setState({ value: this.state.defaultValue });
           }}
           type="button"
@@ -203,14 +208,15 @@ class FormStudent extends Component {
 
   render() {
     let { id, name, phone, email } = this.state.value,
-      message = this.state.errValue;
+      message = this.state.errValue, {dispatch} = this.props
     return (
       <div className="container mt-5 p-0">
         <h3 className="bg-dark text-white p-3">Thông tin sinh viên</h3>
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            this.props.addStudent(this.state.value);
+            const action = addStudent(this.state.value)
+            dispatch(action)
             this.setState({ value: this.state.defaultValue });
           }}
           className="border rounded-2 p-4"
@@ -295,28 +301,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addStudent: (student) => {
-      const action = {
-        type: "ADD_STUDENT",
-        payload: student,
-      };
-      dispatch(action);
-    },
-    updateStudent: (student) => {
-      const action = {
-        type: "UPDATE_STUDENT",
-        payload: student,
-      };
-      dispatch(action);
-    },
-  };
-};
 
 const ComponentWithRedux = connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(FormStudent);
 
 export default ComponentWithRedux;
