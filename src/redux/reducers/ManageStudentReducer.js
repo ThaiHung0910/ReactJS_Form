@@ -37,10 +37,12 @@ const ManageStudentReducer = createSlice({
     },
 
     deleteStudent: (state, action) => {
-      state.arrStudent = state.arrStudent.filter(
-        (e) => e.id !== action.payload
-      );
-      state.isSearch = false
+      if (window.confirm("Are you sure you want to delete this ?")) {
+        state.arrStudent = state.arrStudent.filter(
+          (e) => e.id !== action.payload
+        );
+        state.isSearch = false
+      }
     },
 
     editStudent: (state, action) => {
