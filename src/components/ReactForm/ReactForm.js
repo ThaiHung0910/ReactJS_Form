@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import FormStudent from './FormStudent'
-import TableStudent from './TableStudent'
+import FormStudent from './FormStudent/FormStudent'
+import TableStudent from './TableStudent/TableStudent'
 
 export default class ReactForm extends Component {
  

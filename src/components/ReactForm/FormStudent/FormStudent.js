@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addStudent, updateStudent} from "../../redux/reducers/ManageStudentReducer";
+import { addStudent, updateStudent} from "../../../redux/reducers/ManageStudentReducer";
 
 
 

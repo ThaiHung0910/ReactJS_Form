@@ -5,7 +5,7 @@ import {
   editStudent,
   updateSearchTerm,
   setSearchResults,
-} from "../../redux/reducers/ManageStudentReducer";
+} from "../../../redux/reducers/ManageStudentReducer";
 
 class TableStudent extends Component {
   renderStudent = () => {
